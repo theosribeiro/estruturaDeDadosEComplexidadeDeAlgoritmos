@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
-
+<header>
+    <h2>Insertion Sort</h2>
+</header>
 <body>
     <script>
-            function insertSort(A) {
+            function insertSort(A) { //Ordenação por Seleção
 
-                for (var j = 1; j < array.length; j++) {//loop invariante
+                for (var j = 1; j < A.length; j++) {//loop invariante
                     var chave = A[j]
                     var i = j - 1
 
@@ -16,7 +18,7 @@
                     A[i + 1] = chave
                 }
                 //console.log(A)
-                alert("Ordenado: "+A)
+                alert("Ordenado por InsertionSort: "+A)
             }
 
             //let array = [3, 5, 1, 9, 4, 20, 53, 22, 18]

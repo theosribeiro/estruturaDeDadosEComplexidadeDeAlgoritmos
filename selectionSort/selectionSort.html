@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<header><h2>Selection Sort</h2></header>
+
+<body>
+    
+    <script>
+        function selectiontSort(A) { //Ordenação por Seleção
+
+            for (var i = 0; i < A.length; i++) {//loop invariante
+                var chave = i //considerando o primeiro elemento do array como o menor valor
+                
+                //comparar o elemento selecionado com o posterior
+                for(var j = i+1; j < A.length; j++){
+                    //se o elemento for menor, a chave vai ser esse elemento
+                    if(A[j] < A[chave]) chave = j;
+                }
+                //se o valor minimo for diferente da posição no array, troca os valores para o numero menor ficar antes do maior
+                if(chave != i) [A[i], A[chave]] = [A[chave], A[i]]
+            }
+            //console.log(A)
+            alert("Ordenado por SelectionSort: " + A)
+        }
+
+        //let array = [3, 5, 1, 9, 4, 20, 53, 22, 18]
+        var qtdeElementosArray = prompt("Digite a quantidade de elementos do Array: ")
+        var array = []
+
+        for (var i = 1; i <= qtdeElementosArray; i++) {
+            var valorArray = prompt("Digite o " + i + "º valor do Array: ")
+            array.push(valorArray)
+        }
+
+        alert("Sem Ordenação: " + array)
+        selectiontSort(array)
+    </script>
+        
+</body>
+
+</html>
