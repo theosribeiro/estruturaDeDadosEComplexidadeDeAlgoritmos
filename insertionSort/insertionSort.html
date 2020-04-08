@@ -3,35 +3,120 @@
 <header>
     <h2>Insertion Sort</h2>
 </header>
+
 <body>
+
+    <input type="file" id="inputCSV" onchange="pegaCSV(this)">
+    <div id="CSVsaida"></div>
+    <div id="insertionSort"></div>
+
     <script>
-            function insertSort(A) { //Ordenação por Seleção
+        var array = []
+        var i = 1, chave = 0, j = 0
+        function insertionSort(A) { //Ordenação por Seleção
+                
+                /* while(i < A.length){//loop invariante         
+                    chave = A[i]//                              
+                    j = i-1
+                
+                    while(j>=0 && A[j] > chave){
+                        A[j+1] = A[j]
+                        j = j-1
+                    }
+                    A[j+1] = chave
+                    i = i+1
+                } */
+                
+                for (var j = 1; j < A.length; j++) {//loop invariante   N
+                    var chave = A[j]//                                  N-1
+                    var i = j - 1//                                     
 
-                for (var j = 1; j < A.length; j++) {//loop invariante
-                    var chave = A[j]
-                    var i = j - 1
-
-                    while (i >= 0 && A[i] > chave) { //swap entre o numero menor e o maior, comparando os numeros
+                    while ((i >= 0) && (A[i] > chave)) { //compara entre o numero menor e o maior, comparando os valores, vai comparar até encontrar um numero menor que a chave
                         A[i + 1] = A[i]
                         i = i - 1
                     }
-                    A[i + 1] = chave
+                    A[i + 1] = chave //Se a chave for menor do que o elemento i do array, colocar o valor na posicao seguinte, ordenando
                 }
+                
+                var count = 0
                 //console.log(A)
-                alert("Ordenado por InsertionSort: "+A)
+                //alert("Ordenado por InsertionSort: " + A)
+                //mostrar o resultado ordenado
+                var strDivIS = '<table>'
+                strDivIS += '<tr>';
+                for (var k = 0; k < array.length; k++) {
+                    count++
+                    //strDivIS += '<tr>';
+                    strDivIS += '<td>' + "|" + A[k] + "|, " + '</td>';
+                    if(count == 25){
+                        strDivIS += '</tr>'
+                        count = 0
+                        strDivIS += '<tr>'; 
+                    }
+                    
+                }
+                strDivIS += '</tr>'
+                strDivIS += '<table>'
+                var insertionSort = document.getElementById('insertionSort');
+                insertionSort.innerHTML = strDivIS;
             }
 
-            //let array = [3, 5, 1, 9, 4, 20, 53, 22, 18]
-            var qtdeElementosArray = prompt("Digite a quantidade de elementos do Array: ")
-            var array = []
+        //capturar arquivo
 
-            for (var i = 1; i <= qtdeElementosArray; i++) {
-                var valorArray = prompt("Digite o " + i + "º valor do Array: ")
-                array.push(valorArray)
+        var leitorDeCSV = new FileReader()
+        window.onload = function init() {
+            leitorDeCSV.onload = leCSV;
+        }
+
+        function pegaCSV(inputFile) {
+            var file = inputFile.files[0];
+            leitorDeCSV.readAsText(file);
+        }
+
+
+
+        function leCSV(evt) {
+
+            var fileArr = evt.target.result.split('\n');
+            var strDiv = '<table>';
+            var indice = 0
+            
+            for (var i = 0; i < fileArr.length; i++) {
+                strDiv += '<tr>';
+                var fileLine = fileArr[i].split(',');
+
+                //strDiv += '<td>' + fileArr.length+ '</td>';
+
+                for (var j = 0; j < fileLine.length; j++) {
+                    //strDiv += '<td>' + "valor |"+fileLine[j].trim() +"|"+ '</td>';
+
+                    //strDiv += '<td>' + "Array: " + array[j] + "j = " + j + '</td>'
+                    //strDiv += '<td>' + "indice = |" + indice + "|" + '</td>';
+                    array.push((fileLine[j]))
+                    //strDiv += '<td>' + "j = |" + j + "|" + '</td>';
+                    strDiv += '<td>' + "A"+indice+" = |" + array[indice] + "|" + '</td>';
+
+                    indice++
+
+                }
+                strDiv += '</tr>';
+
             }
+            strDiv += '<tr>';
+            strDiv += '<td>' +"Quantidade de linhas: " + fileArr.length + '</td>';
+            strDiv += '</tr>';
+            strDiv += '<tr>';
+            strDiv += '<td>' + "ORDENANDO por INSERTION SORT:" + '</td>';
+            strDiv += '</tr>';
+            strDiv += '</table>';
+            var CSVsaida = document.getElementById('CSVsaida');
+            CSVsaida.innerHTML = strDiv;
 
-            alert("Sem Ordenação: "+array)
-            insertSort(array)
+            //alert("Sem Ordenação: " + array)
+            insertionSort(array)
+        }
+
+
     </script>
 
 </body>

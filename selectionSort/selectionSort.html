@@ -3,36 +3,180 @@
 <header><h2>Selection Sort</h2></header>
 
 <body>
-    
+
+    <input type="file" id="inputCSV" onchange="pegaCSV(this)">
+    <div id="CSVsaida"></div>
+    <div id="selectionSort"></div>
+
     <script>
+        var array = []
         function selectiontSort(A) { //Ordenação por Seleção
 
-            for (var i = 0; i < A.length; i++) {//loop invariante
-                var chave = i //considerando o primeiro elemento do array como o menor valor
+            for (var i = 0; i < A.length; i++) {//loop invariante                                                                     N + 1 + N
+                var chave = i //considerando o primeiro elemento do array como o menor valor                                          1
                 
                 //comparar o elemento selecionado com o posterior
-                for(var j = i+1; j < A.length; j++){
+                for(var j = i+1; j < A.length; j++){ //                                                                              2 + N - 1 + N                                    
                     //se o elemento for menor, a chave vai ser esse elemento
-                    if(A[j] < A[chave]) chave = j;
+                    if(A[parseInt(j)] < A[parseInt(chave)]){
+                        chave = j; //                                                                                 2         
+                    } 
                 }
                 //se o valor minimo for diferente da posição no array, troca os valores para o numero menor ficar antes do maior
-                if(chave != i) [A[i], A[chave]] = [A[chave], A[i]]
+                if(chave != i){
+                    [A[i], A[chave]] = [A[chave], A[i]] //                                                                 3
+                } 
+                
             }
             //console.log(A)
-            alert("Ordenado por SelectionSort: " + A)
+            //alert("Ordenado por SelectionSort: " + A)
+            //mostrar o resultado ordenado
+            var strDivSS = '<table>'
+                for(var k=0;k<array.length;k++){
+                    strDivSS += '<tr>';
+                        strDivSS += '<td>' + "|" + A[k] + "|" + '</td>';
+                    strDivSS += '</tr>'
+                }
+            strDivSS += '<table>'
+            var selectionSort = document.getElementById('selectionSort');
+            selectionSort.innerHTML = strDivSS;
+
         }
 
-        //let array = [3, 5, 1, 9, 4, 20, 53, 22, 18]
-        var qtdeElementosArray = prompt("Digite a quantidade de elementos do Array: ")
-        var array = []
+        //capturar arquivo
+        
+        var leitorDeCSV = new FileReader()
+        window.onload = function init() {
+            leitorDeCSV.onload = leCSV;
+        }
 
-        for (var i = 1; i <= qtdeElementosArray; i++) {
+        function pegaCSV(inputFile) {
+            var file = inputFile.files[0];
+            leitorDeCSV.readAsText(file);
+        }
+
+        
+        
+        function leCSV(evt) {
+
+            var fileArr = evt.target.result.split('\n');
+            //var strDiv = '<table>';
+            var indice = 0
+            
+            for (var i = 0; i < fileArr.length; i++) {
+                //strDiv += '<tr>';
+                var fileLine = fileArr[i].split(',');
+                
+                //strDiv += '<td>' + fileArr.length+ '</td>';
+
+                for (var j = 0; j < fileLine.length; j++) {
+                    //strDiv += '<td>' + "valor |"+fileLine[j].trim() +"|"+ '</td>';
+                    
+                    //strDiv += '<td>' + "Array: " + array[j] + "j = " + j + '</td>'
+                    //strDiv += '<td>' + "indice = |" + indice + "|" + '</td>';
+                    array.push((fileLine[j]))
+                    //strDiv += '<td>' + "j = |" + j + "|" + '</td>';
+                    //strDiv += '<td>' + "A = |" + array[indice] + "|" + '</td>';
+                    
+                    indice++
+
+                }
+                //strDiv += '<td>' + "|ORDENANDO|" + '</td>';
+                //strDiv += '</tr>';
+                //strDiv += '<tr>';
+
+               /* for (var j = 0; j < fileLine.length; j++){
+                    strDiv += '<td>' + "Array: " + array[j] + '</td>' + "</tr>" + "<tr>" + "<td>" + "indice = " + indice + "</td>" + "</tr>"
+                    //array.push(fileLine[j].trim())
+                }*/
+                 
+                //strDiv += '</tr>';
+
+            }
+
+            //strDiv += '</table>';
+            //var CSVsaida = document.getElementById('CSVsaida');
+            //CSVsaida.innerHTML = strDiv;
+            //strDiv2 += '</table>'
+            
+            //alert("Sem Ordenação: " + array)
+            selectiontSort(array)
+        }
+
+        /* const fs = require('fs');
+        var array = []
+        fs.readFile('./instancias-num/num.1000.1.txt', 'utf-8', function (err, data) {
+                var linhas = data.split(/\r?\n/);
+                linhas.forEach(function (linha) {
+                    //console.log(linha); // aqui podes fazer o que precisas com cada linha
+                    array.push(linha)
+                })
+        }) */
+        
+        /*
+        <input type="file" id="files" name="files[]" multiple />
+    <output id="list"></output>
+        function handleFileSelect(evt) {
+            var files = evt.target.files; // FileList object
+
+            // files is a FileList of File objects. List some properties.
+            var output = [];
+            
+
+
+            for (var i = 0, f; f = files[i]; i++) {
+                output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                    f.size, ' bytes, last modified: ',
+                    f.lastModifiedDate.toLocaleDateString(), '</li>');
+                
+                /*
+                var lineReader = require('line-reader');
+                lineReader.eachLine('file.txt', function (line, last) {
+                    console.log(line);
+
+                    if (/* done *//*) {
+                        return false; // stop reading
+                    }
+                });
+                */
+                /*
+                var rl = readline.createInterface({
+                    input: fs.createReadStream('./instancias-num/num.1000.1.in'),
+                    output: process.stdout,
+                    terminal: false
+                })
+                rl.on('line', function (line) {
+                    console.log(line) // aqui podes fazer o que precisas com cada linha
+                    alert(line)
+                })
+                */
+
+            /*    
+            }
+            document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+        }
+
+        document.getElementById('files').addEventListener('change', handleFileSelect, false);
+        */
+        
+
+        
+
+
+        //let array = [3, 5, 1, 9, 4, 20, 53, 22, 18]
+        //var qtdeElementosArray = prompt("Digite a quantidade de elementos do Array: ")
+        //var array = []
+        
+        /*
+        for (var i = 1; i <= qtdeElementosArray; i++) { 
             var valorArray = prompt("Digite o " + i + "º valor do Array: ")
             array.push(valorArray)
         }
+        */
+        //alert("Sem Ordenação: " + array)
+        //selectiontSort(array)
 
-        alert("Sem Ordenação: " + array)
-        selectiontSort(array)
+
     </script>
         
 </body>
