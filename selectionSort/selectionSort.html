@@ -12,35 +12,74 @@
         var array = []
         function selectiontSort(A) { //Ordenação por Seleção
 
-            for (var i = 0; i < A.length; i++) {//loop invariante                                                                     N + 1 + N
-                var chave = i //considerando o primeiro elemento do array como o menor valor                                          1
+            for (var i = 0; i < A.length-1; i++) {//loop invariante                                                                    1 + N 
+                var chave = i //considerando o 0 como o menor valor                                           1
                 
                 //comparar o elemento selecionado com o posterior
-                for(var j = i+1; j < A.length; j++){ //                                                                              2 + N - 1 + N                                    
+                for(var j = i+1; j < A.length; j++){ //                                                                              2 + N                                    
                     //se o elemento for menor, a chave vai ser esse elemento
-                    if(A[parseInt(j)] < A[parseInt(chave)]){
-                        chave = j; //                                                                                 2         
+                    
+                    if(A[j] <= 0 && A[chave] <= 0){ //
+                        if (-Math.abs(A[j]) < -Math.abs(A[chave])) {//                                                                                             1
+                            chave = j; //                                                                                                  1         
+                        }    
+                    }
+                    else if (A[j] >= 0 && A[chave] <= 0) { //
+                        if (Math.abs(A[j]) < -Math.abs(A[chave])) {//                                                                                             1
+                            chave = j; //                                                                                                  1         
+                        }
+                    }
+                    else if (A[j] <= 0 && A[chave] >= 0) { //
+                        if (-Math.abs(A[j]) < Math.abs(A[chave])) {//                                                                                             1
+                            chave = j; //                                                                                                  1         
+                        }
+                    }
+                    else if(A[j] >= 0 && A[chave] >= 0){
+                        if (Math.abs(A[j]) < Math.abs(A[chave])) {//                                                                                             1
+                            chave = j; //                                                                                                  1         
+                        }
+                    }
+
+                    
+                    /*
+                    if(A[j] < A[chave]){//                                                                                             1
+                        chave = j; //                                                                                                  1         
                     } 
+                    */
                 }
                 //se o valor minimo for diferente da posição no array, troca os valores para o numero menor ficar antes do maior
-                if(chave != i){
-                    [A[i], A[chave]] = [A[chave], A[i]] //                                                                 3
+                if(chave != i){//                                                                                                      1
+                    [A[i], A[chave]] = [A[chave], A[i]] //                                                                             2
                 } 
                 
             }
             //console.log(A)
             //alert("Ordenado por SelectionSort: " + A)
+            
+            exibeResultadoOrdenado(A)
+
+        }
+
+        function exibeResultadoOrdenado(A){
             //mostrar o resultado ordenado
+            var count = 0
             var strDivSS = '<table>'
-                for(var k=0;k<array.length;k++){
-                    strDivSS += '<tr>';
-                        strDivSS += '<td>' + "|" + A[k] + "|" + '</td>';
+            strDivSS += '<tr>';
+            for (var k = 0; k < A.length; k++) {
+                count++
+                //strDivIS += '<tr>';
+                strDivSS += '<td>' + A[k] + ", " + '</td>';
+                if (count == 23) {
                     strDivSS += '</tr>'
+                    count = 0
+                    strDivSS += '<tr>';
                 }
-            strDivSS += '<table>'
+
+            }
+            strDivSS += '</tr>';
+            strDivSS += '</table>'
             var selectionSort = document.getElementById('selectionSort');
             selectionSort.innerHTML = strDivSS;
-
         }
 
         //capturar arquivo
@@ -60,7 +99,7 @@
         function leCSV(evt) {
 
             var fileArr = evt.target.result.split('\n');
-            //var strDiv = '<table>';
+            var strDiv = '<table>';
             var indice = 0
             
             for (var i = 0; i < fileArr.length; i++) {
@@ -93,7 +132,15 @@
                 //strDiv += '</tr>';
 
             }
-
+            strDiv += '<tr>';
+            strDiv += '<td>' + "Quantidade de linhas: " + fileArr.length + '</td>';
+            strDiv += '</tr>';
+            strDiv += '<tr>';
+            strDiv += '<td>' + "ORDENANDO por SELECTION SORT:" + '</td>';
+            strDiv += '</tr>';
+            strDiv += '</table>';
+            var CSVsaida = document.getElementById('CSVsaida');
+            CSVsaida.innerHTML = strDiv;
             //strDiv += '</table>';
             //var CSVsaida = document.getElementById('CSVsaida');
             //CSVsaida.innerHTML = strDiv;

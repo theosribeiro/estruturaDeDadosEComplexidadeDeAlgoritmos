@@ -11,55 +11,72 @@
     <div id="insertionSort"></div>
 
     <script>
+        
         var array = []
-        var i = 1, chave = 0, j = 0
+
         function insertionSort(A) { //Ordenação por Seleção
                 
-                /* while(i < A.length){//loop invariante         
+                var i = 1, j = 0, chave = 0
+                while(i < A.length){//loop invariante         
                     chave = A[i]//                              
                     j = i-1
-                
-                    while(j>=0 && A[j] > chave){
-                        A[j+1] = A[j]
-                        j = j-1
+                    
+                    if ((A[i] <= 0) && (chave <= 0)) {//                 N + N
+                        while (j >= 0 && (-Math.abs(A[j] > -Math.abs(chave)))) {
+                            A[j + 1] = A[j]
+                            j = j - 1
+                        }
                     }
+                    else if ((A[i] <= 0) && (chave >= 0)) {//                 N + N
+                        while (j >= 0 && (-Math.abs(A[j] > Math.abs(chave)))) {
+                            A[j + 1] = A[j]
+                            j = j - 1
+                        }
+                    }
+                    else if ((A[i] >= 0) && (chave <= 0)) {//                 N + N
+                        while (j >= 0 && (Math.abs(A[j] > -Math.abs(chave)))) {
+                            A[j + 1] = A[j]
+                            j = j - 1
+                        }
+                    }
+                    else{
+                        while (j >= 0 && ((Math.abs(A[j]) > (Math.abs(chave))))) {
+                            A[j + 1] = A[j]
+                            j = j - 1
+                        }
+                    }
+
                     A[j+1] = chave
                     i = i+1
-                } */
-                
-                for (var j = 1; j < A.length; j++) {//loop invariante   N
-                    var chave = A[j]//                                  N-1
-                    var i = j - 1//                                     
+                }
 
-                    while ((i >= 0) && (A[i] > chave)) { //compara entre o numero menor e o maior, comparando os valores, vai comparar até encontrar um numero menor que a chave
-                        A[i + 1] = A[i]
-                        i = i - 1
-                    }
-                    A[i + 1] = chave //Se a chave for menor do que o elemento i do array, colocar o valor na posicao seguinte, ordenando
+                ExibeResultadoOrdenado(A)
+        }
+
+        function ExibeResultadoOrdenado(A){
+            var count = 0
+            //console.log(A)
+            //alert("Ordenado por InsertionSort: " + A)
+            //mostrar o resultado ordenado
+            var strDivIS = '<table>'
+            strDivIS += '<tr>';
+            for (var k = 0; k < A.length; k++) {
+                count++
+                //strDivIS += '<tr>';
+                strDivIS += '<td>' + A[k] + ", " + '</td>';
+                if (count == 23) {
+                    strDivIS += '</tr>'
+                    count = 0
+                    strDivIS += '<tr>';
                 }
-                
-                var count = 0
-                //console.log(A)
-                //alert("Ordenado por InsertionSort: " + A)
-                //mostrar o resultado ordenado
-                var strDivIS = '<table>'
-                strDivIS += '<tr>';
-                for (var k = 0; k < array.length; k++) {
-                    count++
-                    //strDivIS += '<tr>';
-                    strDivIS += '<td>' + "|" + A[k] + "|, " + '</td>';
-                    if(count == 25){
-                        strDivIS += '</tr>'
-                        count = 0
-                        strDivIS += '<tr>'; 
-                    }
-                    
-                }
-                strDivIS += '</tr>'
-                strDivIS += '<table>'
-                var insertionSort = document.getElementById('insertionSort');
-                insertionSort.innerHTML = strDivIS;
+
             }
+            strDivIS += '</tr>'
+            strDivIS += '</table>'
+            var insertionSort = document.getElementById('insertionSort');
+            insertionSort.innerHTML = strDivIS;
+
+        }
 
         //capturar arquivo
 
@@ -73,16 +90,14 @@
             leitorDeCSV.readAsText(file);
         }
 
-
-
         function leCSV(evt) {
 
             var fileArr = evt.target.result.split('\n');
             var strDiv = '<table>';
-            var indice = 0
+            //var indice = 0
             
             for (var i = 0; i < fileArr.length; i++) {
-                strDiv += '<tr>';
+                //strDiv += '<tr>';
                 var fileLine = fileArr[i].split(',');
 
                 //strDiv += '<td>' + fileArr.length+ '</td>';
@@ -94,12 +109,12 @@
                     //strDiv += '<td>' + "indice = |" + indice + "|" + '</td>';
                     array.push((fileLine[j]))
                     //strDiv += '<td>' + "j = |" + j + "|" + '</td>';
-                    strDiv += '<td>' + "A"+indice+" = |" + array[indice] + "|" + '</td>';
+                    //strDiv += '<td>' + "A"+indice+" = |" + array[indice] + "|" + '</td>';
 
-                    indice++
+                    //indice++
 
                 }
-                strDiv += '</tr>';
+                //strDiv += '</tr>';
 
             }
             strDiv += '<tr>';
@@ -115,7 +130,6 @@
             //alert("Sem Ordenação: " + array)
             insertionSort(array)
         }
-
 
     </script>
 
