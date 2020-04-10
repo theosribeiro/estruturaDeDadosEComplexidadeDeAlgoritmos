@@ -1,0 +1,4 @@
+Melhor caso: 
+T(n) = (13n^2 + 11n)/2 + 2
+Pior caso:
+T(n) = 10n^2 + n -16

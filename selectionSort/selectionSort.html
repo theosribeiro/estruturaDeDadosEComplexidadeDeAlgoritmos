@@ -11,32 +11,33 @@
     <script>
         var array = []
         function selectiontSort(A) { //Ordenação por Seleção
-
-            for (var i = 0; i < A.length-1; i++) {//loop invariante                                                                    1 + N 
-                var chave = i //considerando o 0 como o menor valor                                           1
+            //                                                          melhor caso: array[-8,-7,-6,-5,-4]                      pior caso: [5,4,3,2,1]               custo   qtde execucao
+            for (var i = 0; i < A.length-1; i++) {//loop invariante                        1+1                                    1+1                                 6         N 
+                //A chave vai ser o menor valor encontrado no array
+                var chave = i //considerando o 0 como o menor valor                        1+1                                    1+1                                 2         N-1
                 
                 //comparar o elemento selecionado com o posterior
-                for(var j = i+1; j < A.length; j++){ //                                                                              2 + N                                    
+                for(var j = i+1; j < A.length; j++){ //                                    1+1+1+1+1                               1+1+1+1                            6    somatorio de j=1 ate N de tj   -- tj = N                                 
                     //se o elemento for menor, a chave vai ser esse elemento
                     
-                    if(A[j] <= 0 && A[chave] <= 0){ //
-                        if (-Math.abs(A[j]) < -Math.abs(A[chave])) {//                                                                                             1
-                            chave = j; //                                                                                                  1         
+                    if(A[j] <= 0 && A[chave] <= 0){ //                                     1+1+1+1+1                               1+1+1+1                            2    somatorio de j=1 ate N de tj -- tj = N-1                                
+                        if (-Math.abs(A[j]) < -Math.abs(A[chave])) {//                     1+1+1+1+1                               1+1                                5     somatorio de j=1 ate N de tj -- tj = N-1                                                                 1
+                            chave = j; //                                                  0                                       1+1                                1     somatorio de j=1 ate N de tj -- tj = N-1                                         1         
                         }    
                     }
-                    else if (A[j] >= 0 && A[chave] <= 0) { //
-                        if (Math.abs(A[j]) < -Math.abs(A[chave])) {//                                                                                             1
-                            chave = j; //                                                                                                  1         
+                    else if (A[j] > 0 && A[chave] <= 0) { //                               0                                      1+1+1
+                        if (Math.abs(A[j]) < -Math.abs(A[chave])) {//                      0                                       0                                                               1
+                            chave = j; //                                                  0                                       0                                  1         
                         }
                     }
-                    else if (A[j] <= 0 && A[chave] >= 0) { //
-                        if (-Math.abs(A[j]) < Math.abs(A[chave])) {//                                                                                             1
-                            chave = j; //                                                                                                  1         
+                    else if (A[j] <= 0 && A[chave] >= 0) { //                              0                                      1+1+1
+                        if (-Math.abs(A[j]) < Math.abs(A[chave])) {//                      0                                      1+1                                                                1
+                            chave = j; //                                                  0                                      0                                         1         
                         }
                     }
-                    else if(A[j] >= 0 && A[chave] >= 0){
-                        if (Math.abs(A[j]) < Math.abs(A[chave])) {//                                                                                             1
-                            chave = j; //                                                                                                  1         
+                    else if(A[j] >= 0 && A[chave] > 0){//                                  0                                     1+1
+                        if (Math.abs(A[j]) < Math.abs(A[chave])) {//                       0                                     1+1                                                                     1
+                            chave = j; //                                                  0                                     1+1                                         1         
                         }
                     }
 
@@ -47,14 +48,15 @@
                     } 
                     */
                 }
-                //se o valor minimo for diferente da posição no array, troca os valores para o numero menor ficar antes do maior
-                if(chave != i){//                                                                                                      1
-                    [A[i], A[chave]] = [A[chave], A[i]] //                                                                             2
+                //se o valor minimo for diferente da posição no array, troca os valores para o numero menor ficar antes do maior                                 custo
+                if(chave != i){// se entrou em algum if(chave = j), entra aqui           1     |                                1               N-1                  1                                                                            1
+                    [A[i], A[chave]] = [A[chave], A[i]] //                               0                                     1               N-1                  2                                                          2
                 } 
                 
             }
-            //console.log(A)
-            //alert("Ordenado por SelectionSort: " + A)
+
+            //PIOR CASO: T(n) = 10n^2 + n -16
+            //MELHOR CASO: T(n) = (13n^2 + 11n)/2 + 2
             
             exibeResultadoOrdenado(A)
 
