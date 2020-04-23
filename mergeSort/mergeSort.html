@@ -22,8 +22,8 @@
             let ladoEsquerdo = []
             let ladoDireito = []
 
-            var strDivMerge = '<table>'
-            strDivMerge += '<tr>';
+            /* var strDivMerge = '<table>'
+            strDivMerge += '<tr>'; */
 
             //var j=0
             for(let i = inicio; i <= meio; i++){
@@ -45,7 +45,7 @@
             ladoDireito.push(Number.POSITIVE_INFINITY)
             ladoEsquerdo.push(Number.POSITIVE_INFINITY)
 
-            strDivMerge += '<td>' + "Lado Esquerdo: " + '</td>';
+            /* strDivMerge += '<td>' + "Lado Esquerdo: " + '</td>';
             for (let a = 0; a < ladoEsquerdo.length; a++) {
                 strDivMerge += '<td>' + ladoEsquerdo[a] + ", " + '</td>';
             }
@@ -56,7 +56,7 @@
             strDivMerge += '<td>' + "Lado Direito: " + '</td>';
             for (let b = 0; b < ladoDireito.length; b++) {
                 strDivMerge += '<td>' + ladoDireito[b] + ", " + '</td>';
-            }
+            } */
 
             
             //ORDENAR O MEU ARRAY 'A' CAPTURANDO O MENOR ELEMENTO DOS 2 ARRAYS (DIR E ESQ)
@@ -67,7 +67,7 @@
 
             for (let k = inicio; k <= fim; k++) {
                 
-                if(ladoEsquerdo[e] <= 0 && ladoDireito[d] <= 0){
+                /* if(ladoEsquerdo[e] <= 0 && ladoDireito[d] <= 0){
                     if (-(Math.abs(ladoEsquerdo[e])) <= -(Math.abs(ladoDireito[d]))) {
                         A[k] = -Math.abs(ladoEsquerdo[e])                        
                         //strDivMerge += '<td>' + "A[" + k + "]" + " = " + aux[k] + '</td>';
@@ -110,31 +110,31 @@
                         //strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
                         d++
                     }
-                } 
+                } */ 
 
                 /* strDivMerge += '</tr>';
                 strDivMerge += '<tr>'; */
                 
                 
-                /* if (ladoEsquerdo[i] <= ladoDireito[j]) {
+                if (ladoEsquerdo[i] <= ladoDireito[j]) {
                     A[k] = ladoEsquerdo[i]
-                    strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
+                    //strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
                     i++
                 } else{// if(ladoEsquerdo[i] > ladoDireito[j]){//else if (ladoEsquerdo[i] >= ladoDireito[j]) {
                     A[k] = ladoDireito[j]
-                    strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
+                    //strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
                     j++
-                } */
+                }
 
 
             
             }
-            strDivMerge += '</tr>';
+            /* strDivMerge += '</tr>';
             strDivMerge += '</table>';
 
 
             var exibeMerge = document.getElementById('exibeMerge');
-            exibeMerge.innerHTML = strDivMerge;
+            exibeMerge.innerHTML = strDivMerge; */
 
             exibeResultadoOrdenado(A)
         }
@@ -203,7 +203,7 @@
             strDiv += '<tr>';
             var indice = 0
 
-            strDiv += '<td>' + "Array Original:" + '</td>';
+            //strDiv += '<td>' + "Array Original:" + '</td>';
 
             for (var i = 0; i < fileArr.length; i++) {
                 //strDiv += '<tr>';
@@ -216,7 +216,7 @@
 
                     //strDiv += '<td>' + "Array: " + array[j] + "j = " + j + '</td>'
                     //strDiv += '<td>' + "indice = |" + indice + "|" + '</td>';
-                    array.push((fileLine[j]))
+                    array.push((parseInt(fileLine[j],10)))
                     //strDiv += '<td>' + "j = |" + j + "|" + '</td>';
                     //strDiv += '<td>' + array[indice] + ", " + '</td>';
 
