@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <h2>MERGE Sort</h2>
+</header>
+
+<body>
+
+    <input type="file" id="inputCSV" onchange="pegaCSV(this)">
+    <div id="CSVsaida"></div>
+    <div id="exibeMergeSort"></div>
+    <div id="exibeMerge"></div>
+    <div id="exibeResultado"></div>
+
+    <script>
+        let array = []
+        let aux = []
+
+        function merge(A, inicio, meio, fim){ //APOS DESMEMBRAR TODO O ARRAY, SEPARAR O LADO DIREITO E ESQUERDO DO ARRAY ORIGINAL E ORDENAR 
+            
+            var count = 0
+            let ladoEsquerdo = []
+            let ladoDireito = []
+
+            var strDivMerge = '<table>'
+            strDivMerge += '<tr>';
+
+            //var j=0
+            for(let i = inicio; i <= meio; i++){
+                    //ladoEsquerdo[j] = A[i]
+                    ladoEsquerdo.push(A[i])
+                //j++
+            } 
+
+            //var i = 0 
+            for (let j = meio+1; j <= fim; j++) {
+                //ladoDireito[i] = A[j]
+                ladoDireito.push(A[j])
+                //i++
+            }
+            /* 
+            strDivMerge += '</tr>';
+            strDivMerge += '<tr>'; */
+            
+            ladoDireito.push(Number.POSITIVE_INFINITY)
+            ladoEsquerdo.push(Number.POSITIVE_INFINITY)
+
+            strDivMerge += '<td>' + "Lado Esquerdo: " + '</td>';
+            for (let a = 0; a < ladoEsquerdo.length; a++) {
+                strDivMerge += '<td>' + ladoEsquerdo[a] + ", " + '</td>';
+            }
+            
+            strDivMerge += '</tr>';
+            strDivMerge += '<tr>';
+            
+            strDivMerge += '<td>' + "Lado Direito: " + '</td>';
+            for (let b = 0; b < ladoDireito.length; b++) {
+                strDivMerge += '<td>' + ladoDireito[b] + ", " + '</td>';
+            }
+
+            
+            //ORDENAR O MEU ARRAY 'A' CAPTURANDO O MENOR ELEMENTO DOS 2 ARRAYS (DIR E ESQ)
+            let d = 0
+            let e = 0
+            var i = 0 
+            var j = 0 
+
+            for (let k = inicio; k <= fim; k++) {
+                
+                if(ladoEsquerdo[e] <= 0 && ladoDireito[d] <= 0){
+                    if (-(Math.abs(ladoEsquerdo[e])) <= -(Math.abs(ladoDireito[d]))) {
+                        A[k] = -Math.abs(ladoEsquerdo[e])                        
+                        //strDivMerge += '<td>' + "A[" + k + "]" + " = " + aux[k] + '</td>';
+                        e++
+                    } else if (-(Math.abs(ladoEsquerdo[e])) > -(Math.abs(ladoDireito[d]))) {
+                        A[k] = -Math.abs(ladoDireito[d])
+                        //strDivMerge += '<td>' + "A[" + k + "]" + " = " + aux[k] + '</td>';
+                        d++
+                    }
+                }
+                else if (ladoEsquerdo[e] <= 0 && ladoDireito[d] > 0) {
+                    if (-(Math.abs(ladoEsquerdo[e])) <= (Math.abs(ladoDireito[d]))) {
+                        A[k] = -Math.abs(ladoEsquerdo[e])
+                        //strDivMerge += '<td>' + "A[" + k + "]" + " = " + aux[k] + '</td>';
+                        e++
+                    } else if (-(Math.abs(ladoEsquerdo[e])) > (Math.abs(ladoDireito[d]))) {
+                        A[k] = Math.abs(ladoDireito[d])
+                        //strDivMerge += '<td>' + "A[" + k + "]" + " = " + aux[k] + '</td>';
+                        d++
+                    }
+                }
+                else if (ladoEsquerdo[e] > 0 && ladoDireito[d] <= 0) {
+                    if (Math.abs(ladoEsquerdo[e]) <= -(Math.abs(ladoDireito[d]))) {
+                        A[k] = Math.abs(ladoEsquerdo[e])
+                        //strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
+                        e++
+                    } else if (Math.abs(ladoEsquerdo[e]) > -(Math.abs(ladoDireito[d]))) {
+                        A[k] = -Math.abs(ladoDireito[d])
+                        //strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
+                        d++
+                    }
+                }
+                else if (ladoEsquerdo[e] >= 0 && ladoDireito[d] > 0) {
+                    if (Math.abs(ladoEsquerdo[e]) <= Math.abs(ladoDireito[d])) {
+                        A[k] = Math.abs(ladoEsquerdo[e])
+                        //strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
+                        e++
+                    } else if (Math.abs(ladoEsquerdo[e]) > Math.abs(ladoDireito[d])) {
+                        A[k] = Math.abs(ladoDireito[d])
+                        //strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
+                        d++
+                    }
+                } 
+
+                /* strDivMerge += '</tr>';
+                strDivMerge += '<tr>'; */
+                
+                
+                /* if (ladoEsquerdo[i] <= ladoDireito[j]) {
+                    A[k] = ladoEsquerdo[i]
+                    strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
+                    i++
+                } else{// if(ladoEsquerdo[i] > ladoDireito[j]){//else if (ladoEsquerdo[i] >= ladoDireito[j]) {
+                    A[k] = ladoDireito[j]
+                    strDivMerge += '<td>' + "A[" + k + "]" + " = " + A[k] + '</td>';
+                    j++
+                } */
+
+
+            
+            }
+            strDivMerge += '</tr>';
+            strDivMerge += '</table>';
+
+
+            var exibeMerge = document.getElementById('exibeMerge');
+            exibeMerge.innerHTML = strDivMerge;
+
+            exibeResultadoOrdenado(A)
+        }
+
+        /*MERGE*/
+        
+        function mergeSort(A, inicio, fim) { //Ordenação por DIVISAO E CONQUISTA
+            /*Divide o vetor ao meio, e procurar o elemento em uma das metades baseado em seu valor */
+            let meio = 0
+            if (inicio < fim) {
+                meio = parseInt(((inicio + fim) / 2), 10);
+                mergeSort(A, inicio, meio) //SUBDIVIDIR O VETOR DO INICIO AO MEIO
+                mergeSort(A, meio+1, fim) ////SUBDIVIDIR O VETOR DO MEIO AO FIM
+                /*ORDENAR APOS DESMEMBRAR TODO O ARRAY*/
+                //inicio -- // inicio inicia em 1, deve iniciar em 0 para capturar o 1 elemento do array
+                merge(A, inicio, meio, fim)
+            }
+        }
+
+        function exibeResultadoOrdenado(Arr) {
+                //mostrar o resultado ordenado
+                var count = 0
+                var strDivResultado = ""
+                
+                
+                strDivResultado += '<tr>';
+                strDivResultado += '<th>' + "ORDENANDO POR MERGE SORT:" + '</th>';
+                strDivResultado += '</tr>';
+                strDivResultado += '<table>';
+                
+                strDivResultado += '<tr>';
+                for (var k = 0; k < Arr.length; k++) {
+                    count++
+                    //strDivIS += '<tr>';
+                    strDivResultado += '<td>' + Arr[k] + ", " + '</td>';
+                    if (count == 23) {
+                        strDivResultado += '</tr>'
+                        count = 0
+                        strDivResultado += '<tr>';
+                    }
+
+                }
+                strDivResultado += '</tr>';
+                strDivResultado += '</table>'
+                var exibeResultado = document.getElementById('exibeResultado');
+                exibeResultado.innerHTML = strDivResultado;
+            }
+        
+        
+
+        //capturar arquivo
+
+        var leitorDeCSV = new FileReader()
+        window.onload = function init() {
+            leitorDeCSV.onload = leCSV;
+        }
+
+        function pegaCSV(inputFile) {
+            var file = inputFile.files[0];
+            leitorDeCSV.readAsText(file);
+        }
+
+        function leCSV(evt) {
+
+            var fileArr = evt.target.result.split('\n');
+            var strDiv = '<table>';
+            strDiv += '<tr>';
+            var indice = 0
+
+            strDiv += '<td>' + "Array Original:" + '</td>';
+
+            for (var i = 0; i < fileArr.length; i++) {
+                //strDiv += '<tr>';
+                var fileLine = fileArr[i].split(',');
+
+                //strDiv += '<td>' + fileArr.length+ '</td>';
+                  
+                for (var j = 0; j < fileLine.length; j++) {
+                    //strDiv += '<td>' + "valor |"+fileLine[j].trim() +"|"+ '</td>';
+
+                    //strDiv += '<td>' + "Array: " + array[j] + "j = " + j + '</td>'
+                    //strDiv += '<td>' + "indice = |" + indice + "|" + '</td>';
+                    array.push((fileLine[j]))
+                    //strDiv += '<td>' + "j = |" + j + "|" + '</td>';
+                    //strDiv += '<td>' + array[indice] + ", " + '</td>';
+
+                    indice++
+
+                }
+            }
+
+            let inicio = 0 //inicio do array
+            let fim = array.length -1 //qntde de posicoes no array
+
+            strDiv += '<tr>';
+            strDiv += '<td>' + "Quantidade de linhas: " + fileArr.length + '</td>';
+            strDiv += '</tr>';
+            
+            strDiv += '<tr>';
+            strDiv += '<td>' + "inicio: " + inicio + '</td>';
+            strDiv += '</tr>';
+
+            strDiv += '<tr>';
+            strDiv += '<td>' + "FIM: " + fim + '</td>';
+            strDiv += '</tr>';
+
+            strDiv += '</table>';
+            var CSVsaida = document.getElementById('CSVsaida');
+            CSVsaida.innerHTML = strDiv;
+            
+            mergeSort(array, inicio, fim)
+        }
+    </script>
+
+</body>
+
+</html>
