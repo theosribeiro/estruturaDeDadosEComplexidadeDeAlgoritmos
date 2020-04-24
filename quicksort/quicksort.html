@@ -9,7 +9,10 @@
     <input type="file" id="inputCSV" onchange="pegaCSV(this)">
     <div id="CSVsaida"></div>
     <div id="exibePartition"></div>
+    <div id="exibeQuickSort"></div>
+    
     <div id="exibeResultado"></div>
+    
 
     <script>
         let array = []
@@ -18,94 +21,70 @@
 
             var strPartition = '<table>';
             strPartition += '<tr>';
-
-            let pivo = A[inicio]
-            strPartition += '<td>' + "pivo: "+pivo + '</td>';
+   
+            let pivo = A[fim]
             let i = inicio
-            let j = fim
-            strPartition += '</tr>';
-            strPartition += '<tr>';
-            strPartition += '<td>' + "inicio: " + inicio + '</td>';
-            strPartition += '</tr>';
-            strPartition += '<tr>';
-            strPartition += '<td>' + "fim: " + fim + '</td>';
-            
-            strPartition += '</tr>';
-            strPartition += '<tr>';
+            let t,j = inicio
 
-            /* for(var a=0;a<A.length;a++){
-                strPartition += '<td>' + "A[" + a + "] = " + A[a] +", "+ '</td>';
+            for(j=inicio;j<fim;j++){
+                if(A[j] < pivo){ // coloca todos os valores menores do q o pivo a esquerda
+                    /* strPartition += '<td>' + "Ai[" + i + "]: " + A[i] + '</td>';
+                    strPartition += '<td>' + "Aj[" + j + "]: " + A[j] + '</td>';
+                    strPartition += '</tr>';
+                    strPartition += '<tr>'; */
+                    
+                    [A[i], A[j]] = [A[j], A[i]]
+
+                    /* strPartition += '<td>' + "Ai[" + i + "]: " + A[i] + '</td>';
+                    strPartition += '<td>' + "Aj[" + j + "]: " + A[j] + '</td>';
+                    strPartition += '</tr>';
+                    strPartition += '<tr>'; */
+                    
+                    i++ 
+                }
             }
+
+            /* strPartition += '<td>' + "Ai[" + i + "]: " + A[i] + '</td>';
+            strPartition += '<td>' + "Afim[" + fim + "]: " + A[fim] + '</td>';
             strPartition += '</tr>';
             strPartition += '<tr>'; */
+            
+            [A[i],A[fim]] = [A[fim],A[i]]
 
-
-            //while(true){
-            while (i < j) {
-                strPartition += '<td>' + "Ai[" + i + "]: " + A[i] + '</td>';
-                strPartition += '<td>' + "Aj[" + j + "]: " + A[j] + '</td>';
-                strPartition += '</tr>';
-                strPartition += '<tr>';
-
-                while(A[i] < pivo){
-                    i++
-                    strPartition += '<td>' + "i = " +i+ '</td>';
-                    strPartition += '</tr>';
-                    strPartition += '<tr>';
-                    
-                }
-                while(A[j] >= pivo){
-                    j--
-                    strPartition += '<td>' + "j = " + j + '</td>';
-                    strPartition += '</tr>';
-                    strPartition += '<tr>';
-                    
-                }
-                /* if(i >= j){
-                    break
-                } */
-
-                strPartition += '<td>' + "Ai[" + i + "]: " + A[i] + '</td>';
-                strPartition += '<td>' + "Aj[" + j + "]: " + A[j] + '</td>';
-                strPartition += '</tr>';
-                strPartition += '<tr>';
-                [A[i], A[j]] = [A[j], A[i]]
-                strPartition += '<td>' + "Ai["+i+"]: " + A[i] + '</td>';
-                strPartition += '<td>' + "Aj[" + j + "]: " + A[j] + '</td>';
-                strPartition += '</tr>';
-                strPartition += '<tr>';
-
-                
-
-            } 
-            strPartition += '<td>' +"Troca Ai e Ainicio: " +'</td>';
+            /* strPartition += '<td>' + "Ai[" + i + "]: " + A[i] + '</td>';
+            strPartition += '<td>' + "Afim[" + fim + "]: " + A[fim] + '</td>';
             strPartition += '</tr>';
             strPartition += '<tr>';
-            strPartition += '<td>' + "Ain[" + inicio + "]: " + A[inicio] + '</td>';
-            strPartition += '<td>' + "Aj[" + j + "]: " + A[j] + '</td>';
+            */
             strPartition += '</tr>';
-            strPartition += '<tr>';
-            [A[j], A[inicio]] = [A[j], A[inicio]]
-            strPartition += '<td>' + "Ain[" + inicio + "]: " + A[inicio] + '</td>';
-            strPartition += '<td>' + "Aj[" + j + "]: " + A[j] + '</td>';
- 
-            strPartition += '</tr>';
-            strPartition += '</table>'
+            strPartition += '</table>'; 
+            
             var exibePartition = document.getElementById('exibePartition');
             exibePartition.innerHTML = strPartition;
 
             exibeResultadoOrdenado(A)
+            return (i)
         }
-
+        
         function quicksort(A, inicio, fim){
-            let meio = 0
+            var strDivQS = ""
+            strDivQS += '<table>';
+            strDivQS += '<tr>';
+            
+            let q = 0
             if(inicio < fim){
-                meio = partition(A, inicio, fim)
-                quicksort(A, inicio, meio-1)
-                quicksort(A, meio+1, fim)
+               div = partition(A, inicio, fim)
+               strDivQS += '<td>' + "divisao: " +div+ '</td>';
+                quicksort(A, inicio, div-1)
+                quicksort(A, div+1, fim)
             }
-        }
+            strDivQS += '</tr>';
+            strDivQS += '</table>'
+            var exibeQuickSort = document.getElementById('exibeQuickSort');
+            exibeQuickSort.innerHTML = strDivQS;
 
+            //exibeResultadoOrdenado(A)
+        }
 
         function exibeResultadoOrdenado(Arr) {
             //mostrar o resultado ordenado
@@ -135,8 +114,6 @@
             var exibeResultado = document.getElementById('exibeResultado');
             exibeResultado.innerHTML = strDivResultado;
         }
-
-
 
         //capturar arquivo
 
@@ -170,7 +147,7 @@
 
                     //strDiv += '<td>' + "Array: " + array[j] + "j = " + j + '</td>'
                     //strDiv += '<td>' + "indice = |" + indice + "|" + '</td>';
-                    array.push((fileLine[j]))
+                    array.push(parseInt(fileLine[j],10))
                     //strDiv += '<td>' + "j = |" + j + "|" + '</td>';
                     //strDiv += '<td>' + array[indice] + ", " + '</td>';
 
