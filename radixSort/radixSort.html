@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <header>
-    <h2>COUNTING SORT</h2>
+    <h2>RADIX SORT</h2>
 </header>
 
 <body>
@@ -10,59 +10,85 @@
     <div id="CSVsaida"></div>
     <div id="exibeResultado"></div>
     <div id="exibeCountingSort"></div>
+    <div id="exibeRadixgSort"></div>
 
     <script>
         let array = []
 
-        function countingSort(A,k){
-            var strCS = ""
-            strCS = '<table>';
+        function countingSort(A, k) {
+            
+            var strCS = '<table>';
             strCS += '<tr>';
-
+            //strCS += '<td>' + "ENTREI CS" + '</td>';
             //let aux = new Array(k+1)
-            let aux = []
+            //let aux = []
+
             let vetorOrdenado = []
-            for(var i = 0; i < k+1; i++){
-                aux[i] = 0
+
+            let count = []
+            for(var i = 0; i<10; i++){
+                count[i] = 0;
             }
-            //conta quantas vezes cada valor de aux aparece
-            for(var j = 0; j < A.length; j++){
-                aux[A[j]] = aux[A[j]] + 1
+            //console.log("count0: " + count)
+            for(var i=0; i<A.length; i++){
+                count[parseInt((A[i]/k)%10,10)]  = count[parseInt((A[i] / k) % 10, 10)] + 1
+            }
+            //console.log("count1: " + count)
+            for(var i=1; i<10; i++){
+                count[i] += count[i-1] 
+            }
+            //console.log("count2: "+ count)
+            for(var i= (A.length-1); i >= 0; i--){
+                vetorOrdenado[count[parseInt((A[i]/k)%10,10)] -1] = A[i]
+                //console.log("vetor ordenado_for: "+vetorOrdenado)
+                count[parseInt((A[i] / k) % 10, 10)] = count[parseInt((A[i] / k) % 10, 10)] - 1  
             }
 
-            //Agora C[i] contem o numero de elementos igual a i
-            //acumula as vezes de cada elemento de A com os elementos anteriores a este
-            for(var i = 1; i <= k; i++){
-                aux[i] = aux[i] + aux[i-1]
-            }
-            //Agora C[i] contém o número de elementos menores ou iguais a i
-            //adiciona os elementos em suas posições conforme o acumulo de suas frequencias
-            for(var j = A.length-1; j >= 0; j--){
-                vetorOrdenado[aux[A[j]]-1] = A[j]
-                aux[A[j]] = aux[A[j]] - 1
-            }
-            
-            /* for(var i=0;i<vetorOrdenado.length;i++){
-                strCS += '<td>' + vetorOrdenado[i] + ", " + '</td>';
-            } */
-            
 
             strCS += '</tr>';
             strCS += '</table>'
             var exibeCountingSort = document.getElementById('exibeCountingSort');
             exibeCountingSort.innerHTML = strCS;
-
-            exibeResultadoOrdenado(vetorOrdenado)
+            //console.log("Vetor ordenado: "+vetorOrdenado)
+            return vetorOrdenado
+            //exibeResultadoOrdenado(A)
 
         }
 
+        //d é o maior valor encontrado no array
+        function radixSort(A, d){
+            //console.log(A)
+            var strRS = '<table>';
+            strRS += '<tr>';
+            let aux = []
+
+            //dependendo da quantidade de casas decimais, o i pode ser 1, 10, 100...
+            for (var i = 1; parseInt(d/i,10) > 0; i*=10) {
+                /* strRS += '<td>' +"ENTEI FOR" +'</td>';
+                strRS += '</tr>';
+                strRS += '<tr>'; */
+                //console.log("i: "+i)
+                aux = countingSort(A,i)
+                A = aux
+            }
+            //console.log("A ordenadooooo : "+A)
+            exibeResultadoOrdenado(A)
+            
+
+            strRS += '</tr>';
+            strRS += '</table>'
+            var exibeRadixgSort = document.getElementById('exibeRadixgSort');
+            exibeRadixgSort.innerHTML = strRS;
+
+            
+        }
         function exibeResultadoOrdenado(Arr) {
             //mostrar o resultado ordenado
             var count = 0
             var strDivResultado = ""
 
             strDivResultado += '<tr>';
-            strDivResultado += '<th>' + "ORDENANDO POR COUNTING SORT:" + '</th>';
+            strDivResultado += '<th>' + "ORDENANDO POR RADIX SORT:" + '</th>';
             strDivResultado += '</tr>';
             strDivResultado += '<table>';
 
@@ -114,16 +140,14 @@
 
                 for (var j = 0; j < fileLine.length; j++) {
                     //strDiv += '<td>' + "valor |"+fileLine[j].trim() +"|"+ '</td>';
-                    if(maiorNumero < parseInt(fileLine[j], 10)){
+                    if (maiorNumero < parseInt(fileLine[j], 10)) {
                         maiorNumero = parseInt(fileLine[j], 10)
-                    }
+                    
                     //strDiv += '<td>' + "Array: " + array[j] + "j = " + j + '</td>'
                     //strDiv += '<td>' + "indice = |" + indice + "|" + '</td>';
-                    if(parseInt(fileLine[j],10) >= 0){
-                        array.push(parseInt(fileLine[j], 10))
-                    }
                         
-                    
+                    }
+                    array.push(parseInt(fileLine[j], 10))
                     //strDiv += '<td>' + "j = |" + j + "|" + '</td>';
                     //strDiv += '<td>' + array[indice] + ", " + '</td>';
 
@@ -151,7 +175,7 @@
             var CSVsaida = document.getElementById('CSVsaida');
             CSVsaida.innerHTML = strDiv;
 
-            countingSort(array, maiorNumero)
+            radixSort(array, maiorNumero)
         }
     </script>
 
