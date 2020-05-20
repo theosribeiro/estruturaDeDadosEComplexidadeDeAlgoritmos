@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <h2>HEAP SORT</h2>
+</header>
+
+<body>
+
+    <input type="file" id="inputCSV" onchange="pegaCSV(this)">
+    <div id="CSVsaida"></div>
+    <div id="exibeResultado"></div>
+    <div id="exibeHeapSort"></div>
+
+    <script>
+        let array = []
+
+        function esquerda(i){ // comeca em 0 e nao em 1, assim, inserimos 1 elemento
+            /* if(i==0){
+                return (2*i+1)
+            }else{
+                return (2 * i)
+            } */
+            return (2 * i + 1) 
+        }
+        
+        function direita(i){
+            /* if(i==0){
+                return(2*i+2)
+            }else{
+                return ((2 * i) + 1 ) //começa em 0 e nao em 1
+            } */ 
+            return (2*i + 2)
+            
+        }
+        
+        
+        function maxHeapiFy(A, i, tamanhoHeap) {
+            //console.log("i maxHeapfy: " + i)
+            let maior = i
+            let left = esquerda(i)
+            let right = direita(i)
+            /* console.log("Array: "+ A)
+            console.log("l = "+left+" r = "+right) */
+
+            
+            //console.log("tamanhoHeap = " + tamanhoHeap.length)
+
+            if (left < tamanhoHeap.length && A[left] > A[i]) {
+                maior = left
+            } else {
+                maior = i
+            }
+
+            if (right < tamanhoHeap.length && A[right] > A[maior]) {
+                maior = right
+            }
+            if (maior != i) {
+                
+                var aux = A[i]
+                A[i] = A[maior]
+                A[maior] = aux
+
+                //[A[i] , A[maior] ] = [A[maior] , A[i]]
+                maxHeapiFy(A, maior, tamanhoHeap)
+            }
+            /* console.log("\nvetor: ")   
+            console.log(A) */
+            
+        }
+
+        function buildMaxHeap(A, tamanhoHeap) {
+            let metade = parseInt((A.length / 2), 10)
+            for(var i = metade; i >= 0; i--){
+                /* console.log("A.leng/2 = " + parseInt((A.length / 2), 10))
+                console.log("\ni = " + i) */
+                maxHeapiFy(A,i,tamanhoHeap)
+                
+            }
+        }
+
+        function heapSort(A){
+            let tamanhoHeap = [] 
+            tamanhoHeap.length = A.length
+            //console.log("tamanhoHeap = "+tamanhoHeap.length)
+            buildMaxHeap(A, tamanhoHeap)
+            
+            //console.log("for do heapSort")
+            for(var i = (A.length - 1); i>0; i--){ 
+                /* console.log("\ni heap-sort = " + i)
+                console.log("\nA[0] = " + A[0])
+                console.log("\nA[i] = " + A[i]) */
+                
+                //[A[0],A[i]] = [A[i],A[0]]
+                var aux = A[i]
+                A[i] = A[0]
+                A[0] = aux
+
+                /* console.log("\nA[0] = " + A[0])
+                console.log("\nA[i] = " + A[i]) */
+
+                tamanhoHeap.length -=1
+                
+                maxHeapiFy(A, 0, tamanhoHeap)
+            } 
+
+            exibeResultadoOrdenado(A)
+        }
+        
+        function exibeResultadoOrdenado(Arr) {
+            //mostrar o resultado ordenado
+            var count = 0
+            var strDivResultado = ""
+
+            strDivResultado += '<tr>';
+            strDivResultado += '<th>' + "ORDENANDO POR HEAP SORT:" + '</th>';
+            strDivResultado += '</tr>';
+            strDivResultado += '<table>';
+
+            strDivResultado += '<tr>';
+            for (var k = 0; k < Arr.length; k++) {
+                count++
+                //strDivIS += '<tr>';
+                strDivResultado += '<td>' + Arr[k] + ", " + '</td>';
+                if (count == 23) {
+                    strDivResultado += '</tr>'
+                    count = 0
+                    strDivResultado += '<tr>';
+                }
+
+            }
+            strDivResultado += '</tr>';
+            strDivResultado += '</table>'
+            var exibeResultado = document.getElementById('exibeResultado');
+            exibeResultado.innerHTML = strDivResultado;
+        }
+
+        //capturar arquivo
+
+        var leitorDeCSV = new FileReader()
+        window.onload = function init() {
+            leitorDeCSV.onload = leCSV;
+        }
+
+        function pegaCSV(inputFile) {
+            var file = inputFile.files[0];
+            leitorDeCSV.readAsText(file);
+        }
+
+        function leCSV(evt) {
+
+            var fileArr = evt.target.result.split('\n');
+            var strDiv = '<table>';
+            strDiv += '<tr>';
+            var indice = 0
+            var maiorNumero = 0
+
+            //strDiv += '<td>' + "Array Original:" + '</td>';
+
+            for (var i = 0; i < fileArr.length; i++) {
+                //strDiv += '<tr>';
+                var fileLine = fileArr[i].split(',');
+
+                //strDiv += '<td>' + fileArr.length+ '</td>';
+
+                for (var j = 0; j < fileLine.length; j++) {
+                    //strDiv += '<td>' + "valor |"+fileLine[j].trim() +"|"+ '</td>';
+                    if (maiorNumero < parseInt(fileLine[j], 10)) {
+                        maiorNumero = parseInt(fileLine[j], 10)
+
+                        //strDiv += '<td>' + "Array: " + array[j] + "j = " + j + '</td>'
+                        //strDiv += '<td>' + "indice = |" + indice + "|" + '</td>';
+
+                    }
+                    array.push(parseInt(fileLine[j], 10))
+                    //strDiv += '<td>' + "j = |" + j + "|" + '</td>';
+                    //strDiv += '<td>' + array[indice] + ", " + '</td>';
+
+                    indice++
+
+                }
+            }
+     
+            strDiv += '<tr>';
+            strDiv += '<td>' + "Quantidade de linhas: " + fileArr.length + '</td>';
+            strDiv += '</tr>';
+
+            strDiv += '</table>';
+            var CSVsaida = document.getElementById('CSVsaida');
+            CSVsaida.innerHTML = strDiv;
+            
+            console.log(array)
+            heapSort(array)
+        }
+    </script>
+
+</body>
+
+</html>
