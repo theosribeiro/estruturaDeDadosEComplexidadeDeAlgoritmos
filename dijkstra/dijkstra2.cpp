@@ -230,7 +230,7 @@ int main( )
 
     int size;
 
-    matrix = reader(matrix, "dij50.txt", &size);
+    matrix = reader(matrix, "dij10.txt", &size);
 
     Dijkstra( matrix, size, 0);
 
