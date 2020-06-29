@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <h2>Unidade3</h2>
+</header>
+
+<body>
+
+    <input type="file" id="inputCSV" onchange="pegaCSV(this)">
+    <div id="CSVsaida"></div>
+    <div id="exibeResultado"></div>
+
+    <script>
+        let array = []
+        
+        function minCaminho(matriz,tam){
+            let S = 0, min = Number.MAX_VALUE, custoMenorCaminho = []
+            let linha = 0, caminho = [], cidadeVisitada = 0
+            var i=0,j=0
+            caminho.push(0)
+            for (S = 0; S < tam-1; S++) {
+                    //for (j = linha + 1; j <= tam; j++) { //controle para percorrer o triangulo superior da matriz(coluna) 
+                    for (j = 1; j < tam; j++) {//escolho a cidade 0 como inicio
+                        if ((matriz[i][j] < min) && (matriz[i][j] != 0) && (caminho.includes(j) == false)) {
+                            
+                                min = matriz[i][j]
+                                cidadeVisitada = j
+                        }
+                        if(j == (tam-1)){ //ja tenho o menor caminho
+                            if(caminho.includes(cidadeVisitada) == false){ //so percorre uma cidade se ela nao foi visitada
+                                caminho.push(cidadeVisitada)
+                                custoMenorCaminho.push(min)
+                                i = cidadeVisitada
+
+                                if(S==(tam-2)){ //ultima cidade visitada
+                                    min = matriz[i][0]
+                                    custoMenorCaminho.push(min)
+                                    caminho.push(0)
+                                }
+                            }
+                        }
+                    }
+                
+                console.log("caminho: ", caminho)
+                
+                linha++
+                min = Number.MAX_VALUE
+            }
+            console.log("custoMenorCaminho: ", custoMenorCaminho)
+
+            //console.log("menorCaminho: ", menorCaminho)
+            var somaMenorCaminho = 0
+            for (i = 0; i < custoMenorCaminho.length; i++) {
+                somaMenorCaminho += custoMenorCaminho[i]
+            }
+            console.log("somaMin: ", somaMenorCaminho)
+            
+            //exibeResultado(somaMenorCaminho)
+            return somaMenorCaminho
+        }
+
+        function maxCaminho(matriz, tam) {
+                let S = 0, max = 0, custoMaiorCaminho = []
+                let linha = 0, caminho = [], cidadeVisitada = 0
+                var i = 0, j = 0
+                caminho.push(0)
+                for (S = 0; S < tam - 1; S++) { // cidades
+                    //for (j = linha + 1; j <= tam; j++) { //controle para percorrer o triangulo superior da matriz(coluna) 
+                    for (j = 1; j < tam; j++) {//escolho a cidade 0 como inicio
+                        if ((matriz[i][j] > max) && (matriz[i][j] != 0) && (caminho.includes(j) == false)) {
+
+                            max = matriz[i][j]
+                            cidadeVisitada = j
+                        }
+                        if (j == (tam - 1)) { //ja tenho o menor caminho
+                            if (caminho.includes(cidadeVisitada) == false) { //so percorre uma cidade se ela nao foi visitada
+                                caminho.push(cidadeVisitada)
+                                custoMaiorCaminho.push(max)
+                                i = cidadeVisitada
+
+                                if (S == (tam - 2)) { //ultima cidade visitada
+                                    max = matriz[i][0]
+                                    custoMaiorCaminho.push(max)
+                                    caminho.push(0)
+                                }
+                            }
+                        }
+                    }
+                    console.log("caminho: ", caminho)
+
+                    linha++
+                    max = 0
+                }
+                console.log("custoMaiorCaminho: ", custoMaiorCaminho)
+
+                //console.log("menorCaminho: ", menorCaminho)
+                var somaMaiorCaminho = 0
+                for (i = 0; i < custoMaiorCaminho.length; i++) {
+                    somaMaiorCaminho += custoMaiorCaminho[i]
+                }
+                console.log("somaMax: ", somaMaiorCaminho)
+
+                //exibeResultado(somaMenorCaminho)
+                return somaMaiorCaminho
+            }
+
+        function caminhoMaisBarato(matriz, tam){
+            let S = 0, min = Number.MAX_VALUE, custoCaminhoMaisBarato = []
+            let linha = 0, caminho = [], cidadesNAOvisitadas = [], cidadeVisitada = 0, somaCusto = 0
+            var i = 0, j = 1, l=0,k
+
+            for(k=0;k<tam;k++){
+                cidadesNAOvisitadas[k] = k 
+            }
+            console.log("cidadesNAOvisitadas: ",cidadesNAOvisitadas)
+            caminho.push(0)
+            cidadesNAOvisitadas.splice(0,1)
+            //for (S = 0; S < tam - 1; S++) {
+                //for (i = 0; i < tam; i++) { //controle para percorrer o triangulo superior da matriz(coluna) 
+            
+            //======================================PASSO1======================================
+            for (j = 1; j < tam; j++) {//escolho a cidade 0 como inicio, //escolhe a cidade mais próxima para ser visitado
+                //if(l==0){ 
+                    if ((matriz[i][j] < min) && (matriz[i][j] != 0) && (caminho.includes(j) == false)) {//so percorre uma cidade se ela nao foi visitada
+                        min = matriz[i][j]
+                        cidadeVisitada = j
+                    }
+                    if (j == (tam - 1)) { //ja tenho o menor caminho
+                        caminho.push(cidadeVisitada)//insiro a cidade visitada no array
+                        //console.log("j: ", cidadeVisitada)
+                        cidadesNAOvisitadas.splice(cidadesNAOvisitadas.indexOf(cidadeVisitada), 1)
+                        //console.log("cidadesNAOvisitadas: ", cidadesNAOvisitadas)
+                        custoCaminhoMaisBarato.push(min)  
+                    }
+                    
+            }
+            console.log("caminho_PASSO1: ", caminho)
+            console.log("cidadesNAOvisitadas_PASSO1: ", cidadesNAOvisitadas)
+            //=================================FIM==PASSO1======================================
+
+            //======================================PASSO2======================================
+            min = Number.MAX_VALUE
+            let minAux = 0
+            for (S = 0; S < tam - 1; S++) {//percorrer as cidades
+                for (j = 0; j < tam; j++){//colunas
+                    minAux = matriz[j][caminho[0]] + matriz[caminho[1]][j]
+                    if ((minAux < min) && (minAux != 0) && (caminho.includes(j) == false)) {//saber as cidadesNAOvisitadas ja percorridas para somar o custo e posteriormente buscar o custo minimo    //so percorre uma cidade se ela nao foi visitada
+                        min = minAux
+                        cidadeVisitada = j
+                            /*console.log("cidadesVisitadasFORJ: ", cidadeVisitada)
+                            console.log("custoMIN: ", custoMin, " i: ",i, " j: ",j) */
+                    }
+                }
+                if (S == (tam - 2)) { //ultima cidade visitada
+                    caminho.push(cidadeVisitada)//insiro a cidade visitada no array
+                    caminho.push(0)//fechando o ciclo ->voltando para a cidade origem
+                    cidadesNAOvisitadas.splice(cidadesNAOvisitadas.indexOf(cidadeVisitada), 1)
+                    //custoCaminhoMaisBarato.push(custoMin)
+                    //console.log("cidadesVisitadasIFS: ", cidadeVisitada)
+                }
+            }
+            console.log("caminho_PASSO2: ", caminho)
+            console.log("cidadesNAOvisitadas_PASSO2: ", cidadesNAOvisitadas)
+            
+            //=================================FIM==PASSO2======================================
+            
+            //======================================PASSO3======================================
+            
+            min = Number.MAX_VALUE
+            minAux = 0
+            //console.log("caminho: ",caminho.length)
+            var cidadesNAOvisitadasAux = cidadesNAOvisitadas.length
+            let cidadei, cidadej
+
+            for (S = 0; S < cidadesNAOvisitadasAux; S++) {//percorrer as cidades
+                for(l=0; l<caminho.length-1; l++){
+                    i = caminho[l]
+                    j = caminho[l + 1]
+                    //console.log("l: ",l)
+                    
+                    for(m=0;m<cidadesNAOvisitadas.length;m++){
+                        k = cidadesNAOvisitadas[m]
+                        
+                        minAux = (matriz[i][k] + matriz[k][j]) - matriz[i][j]
+                        
+                        if (minAux < min) {
+                            console.log("# i: ", i, " j: ", j, " k: ", k)
+                            min = minAux
+                            cidadeVisitada = k
+                            cidadei = i
+                            cidadej = j
+
+                            //console.log("min_PASSO3: ", min, " i: ",i," j: ",j, " k: ",k)
+                        }   
+                    }
+                }
+                console.log("cidadei: ",cidadei, " cidadej: ",cidadej, " k: ", cidadeVisitada)
+                caminho.splice(caminho.indexOf(cidadei)+1,0, cidadeVisitada)
+                console.log("MATRIZ[ik]: ",matriz[cidadei][cidadeVisitada], " MATRIZ[kj]: ", matriz[cidadeVisitada][cidadej], " MATRIZ[ij]: ", matriz[cidadei][cidadej])
+                console.log("S: ",S, " - min_PASSO3: ", min, "cidade visitada: ",cidadeVisitada)
+                //caminho.push(cidadeVisitada)
+                cidadesNAOvisitadas.splice(cidadesNAOvisitadas.indexOf(cidadeVisitada), 1)
+                min = Number.MAX_VALUE
+            }
+            console.log("cidadeVisitada_PASSO3: ", cidadeVisitada)
+            
+            
+            
+            var somaCaminhoMaisBarato = 0
+            
+            for(i=0;i<caminho.length-1;i++){
+                j = caminho[i]
+                k = caminho[i+1]
+                somaCaminhoMaisBarato += matriz[j][k]
+            }
+            
+            
+            
+            
+            /* for (S = 0; S < tam - 1; S++) {//percorrer as cidades
+                for (i = 0; i < caminho.length; i++) {//linhas
+                    for (j = 1; j < caminho.length; j++) {//colunas
+                        if ((matriz[i][j] < min) && (matriz[i][j] != 0) && (caminho.includes(j) == false)) {//saber as cidadesNAOvisitadas ja percorridas para somar o custo e posteriormente buscar o custo minimo    //so percorre uma cidade se ela nao foi visitada
+                            min = matriz[caminho[i]][k] + matriz[k][caminho[j]] - matriz[caminho[i]][caminho[j]]
+                            cidadeVisitada = j
+                        }
+                    }
+                }
+                if (S == (tam - 2)) { //ultima cidade visitada
+                    caminho.push(cidadeVisitada)//insiro a cidade visitada no array
+                    //custoCaminhoMaisBarato.push(custoMin)
+                    //console.log("cidadesVisitadasIFS: ", cidadeVisitada)
+                }
+                //k = cidadesNAOvisitadas[K+1]
+
+            } */
+            console.log("caminho_PASSO3: ", caminho)
+
+
+            //=================================FIM==PASSO3======================================
+            
+            
+            console.log("somaCaminhoMaisBarato: ", somaCaminhoMaisBarato)
+
+            //exibeResultado(somaMenorCaminho)
+            return somaCaminhoMaisBarato
+        }
+
+        function unidade3(A) {
+            var i, j, k=1
+            
+            //console.log(A)
+
+            let tam = A[0]//tamanho da matriz
+            console.log("tam: ",tam)
+            
+            let matriz = new Array(tam).fill(0) //criar as linhas
+            matriz = matriz.map(linha => new Array(tam).fill(0)) //criar as colunas
+
+            //console.log(matriz)
+
+            for(i=0;i<tam-1;i++){
+                for(j=i+1;j<tam;j++){
+                    matriz[i][j] = A[k]
+                    matriz[j][i] = A[k]
+                    k++
+                }
+            }
+            console.log("matriz: ",matriz)
+            
+            //let caminhoMin = minCaminho(matriz, tam)
+            //let caminhoMax = maxCaminho(matriz, tam)
+            let maisBarato = caminhoMaisBarato(matriz, tam)
+            //exibeResultado(caminhoMin,caminhoMax,caminhoMelhor)
+
+           /* for(S=0;S<2;S++){
+
+                if(S==0){
+                    for (i = 1; i < tam; i++) {
+                        for (j = 0; j < 1; j++) {
+                            g[i][j] = matriz[i][j]
+                            console.log(g[i][j])
+                        }
+                    }
+                }
+                else{
+                    for(i=1;i<tam;i++){
+                        for(j=i;j<tam-1;j++){
+                            g[i][j+1] = (matriz[i][j+1] + g[i+1][0])
+                        }
+                    }
+                }
+            }
+            console.log("g: ", g)
+
+
+            
+            */
+        } 
+
+        function exibeResultado(min,max,melhor) {
+            //mostrar o resultado ordenado
+            var count = 0
+            var strDivResultado = ""
+            var i
+            
+            strDivResultado += '<table>';
+
+            strDivResultado += '<tr>';
+            strDivResultado += '<td>' + "Valor mínimo: " + min + '</td>';
+            strDivResultado += '</tr>';
+            strDivResultado += '<tr>';
+            strDivResultado += '<td>' + "Valor máximo: " + max + '</td>';
+            strDivResultado += '</tr>';
+            strDivResultado += '<tr>';
+            strDivResultado += '<td>' + "Valor melhor: " + melhor + '</td>';
+            strDivResultado += '</tr>';
+
+            strDivResultado += '</table>'
+            var exibeResultado = document.getElementById('exibeResultado');
+            exibeResultado.innerHTML = strDivResultado;
+        }
+
+        //capturar arquivo
+
+        var leitorDeCSV = new FileReader()
+        window.onload = function init() {
+            leitorDeCSV.onload = leCSV;
+        }
+
+        function pegaCSV(inputFile) {
+            var file = inputFile.files[0];
+            leitorDeCSV.readAsText(file);
+        }
+
+        function leCSV(evt) {
+
+            var fileArr = evt.target.result.split('\n');
+            var strDiv = '<table>';
+            strDiv += '<tr>';
+            var indice = 0
+            var maiorNumero = 0
+
+            //strDiv += '<td>' + "Array Original:" + '</td>';
+
+            for (var i = 0; i < fileArr.length; i++) {
+                //strDiv += '<tr>';
+                //var fileLine = fileArr[i].split(',');
+                var fileLine = fileArr[i].split(' ');
+
+                //strDiv += '<td>' + fileArr.length+ '</td>';
+
+                for (var j = 0; j < fileLine.length; j++) {
+                    //strDiv += '<td>' + "valor |"+fileLine[j].trim() +"|"+ '</td>';
+                    if (maiorNumero < parseInt(fileLine[j], 10)) {
+                        maiorNumero = parseInt(fileLine[j], 10)
+
+                        //strDiv += '<td>' + "Array: " + array[j] + "j = " + j + '</td>'
+                        //strDiv += '<td>' + "indice = |" + indice + "|" + '</td>';
+
+                    }
+                    array.push(parseInt(fileLine[j], 10))
+                    //strDiv += '<td>' + "j = |" + j + "|" + '</td>';
+                    //strDiv += '<td>' + array[indice] + ", " + '</td>';
+
+                    indice++
+
+                }
+            }
+
+            //strDiv += '<tr>';
+            //strDiv += '<td>' + "Quantidade de linhas: " + fileArr.length + '</td>';
+            //strDiv += '</tr>';
+
+            strDiv += '</table>';
+            var CSVsaida = document.getElementById('CSVsaida');
+            CSVsaida.innerHTML = strDiv;
+
+            console.log("array: ",array)
+            unidade3(array)
+        }
+    </script>
+
+</body>
+
+</html>
