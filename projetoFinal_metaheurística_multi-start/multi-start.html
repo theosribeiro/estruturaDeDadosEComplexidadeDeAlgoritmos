@@ -531,7 +531,7 @@
 
             i=0
             //saber os indices dos custos (cidades) na matriz
-            for (m = 0; m < matriz.length; m++) {
+            for (m = 0; m < custo.length; m++) {
                 for (j = 1; j < matriz.length; j++) {
                     //console.log("m: ", m, "j: ",j, "l: ",l)
                     if (custo[m] == matriz[i][j] && caminho.includes(j) == false) { //capturar o indice do valor ordenado
@@ -582,7 +582,7 @@
                 //capturar todos os custos para analise
                 //ce = cidade escohlida
                 if(matriz[0][j] !=0 && (caminho.includes(j) == false)){
-                    //             dce0              +    d1ce             
+                    //             dce-0              +    d1-ce             
                     custo.push(matriz[j][caminho[0]] + matriz[caminho[1]][j])
                 }
                 
@@ -605,6 +605,7 @@
             i=0
             var custoAux 
             //saber os indices dos custos (cidades) na matriz
+            //for (m = 0; m < matriz.length; m++) {
             for (m = 0; m < custo.length; m++) {
                 for (j = 1; j < matriz.length; j++) {
                     //console.log("m: ", m, "j: ",j, "custom: ", custo[m])
@@ -744,7 +745,8 @@
 
             //console.log("caminhoMEIO_REVERSO: ", caminhoReverso, " i: ", i, " j: ", j)
             for(k=i; k <= j; k++){
-                caminhoAux.push(caminhoReverso[k-i])
+                caminhoAux.push(caminhoReverso[k-i]) //percorrer todo o camiho inverso de i ate j
+                //caminhoAux.push(caminhoReverso[k])
             }
             //console.log("caminhoAuxMEIO: ", caminhoAux)
 
@@ -801,7 +803,7 @@
             aux = caminhoParcial[i]
             //.log("caminhoAUXi: ",aux)
             //tirar o elemento da sua posicao 
-            //   (indice a ser add ou removido ,qntde de itens a ser removido,itens a serem add)
+            // splice(indice a ser add ou removido ,qntde de itens a ser removido,itens a serem add)
             caminhoParcial.splice(i, 1) //remover o item do vetor na posicao desejada
             //console.log("removi: ", caminhoAux)
             caminhoParcial.splice(j, 0, aux) //add o item do vetor na posicao desejada
@@ -844,8 +846,6 @@
                     //inserir o elemento em outra posicao
                     //               (indice a ser add ou removido, 0 = add, itens a serem add)
                     //caminhoAux.splice(caminhoAux.indexOf(i), 0, caminhoAux(i)) //add o vetor na posicao desejada
-
-                    
 
                     //console.log("menorCusto: ", menorCustoAux)
                     if (menorCustoAux[1] < menorCusto) {
